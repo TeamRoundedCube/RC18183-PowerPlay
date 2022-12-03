@@ -13,24 +13,20 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 
 //Created by Kyran 11/20/2022 @ 2:09pm
 //Purpose: Teleop for qualifier robot
+//Original Code from 27th november 2022
 
-@TeleOp(name = "Teleop")
-public class Teleop extends OpMode {
+@TeleOp(name = "testTeleop")
+public class originalTeleOp extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
     float turnPower;
     float forwardPower;
     float strafePower;
-    double maxLeftSpeed = .5;
-    double maxRightSpeed = .5;
-    int armPosition = 0;
-    int lastArmPosition = 0;
-    final double positionConversionFactor = 8192.0;
-    boolean invertDirection = false;
+    double maxLeftSpeed = 1;
+    double maxRightSpeed = 1;
+
 
     // Code to run ONCE when the driver hits INIT
     @Override
@@ -41,10 +37,10 @@ public class Teleop extends OpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-      //  robot.gyro.calibrate();
-      //  while(robot.gyro.isCalibrating()) {
-      //      sleep(50);
-      //  }
+        //  robot.gyro.calibrate();
+        //  while(robot.gyro.isCalibrating()) {
+        //      sleep(50);
+        //  }
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -61,31 +57,24 @@ public class Teleop extends OpMode {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //robot.turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
     }
 
     //Code to run ONCE when the driver hits PLAY
     @Override
     public void start() {
-          robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 
     //Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        double convertedArmPosition = (int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * 360);
-        telemetry.addData("turret position", robot.turret.getCurrentPosition());
-        telemetry.addData("corrected position", convertedArmPosition);
-        telemetry.addData("armposition", armPosition);
 
-
-    //    telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
-    //    telemetry.addData("f_Right Encoder Position", robot.f_right.getCurrentPosition());
-    //    telemetry.addData("b_Left Encoder Position", robot.b_left.getCurrentPosition());
-    //    telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
+        //    telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
+        //    telemetry.addData("f_Right Encoder Position", robot.f_right.getCurrentPosition());
+        //    telemetry.addData("b_Left Encoder Position", robot.b_left.getCurrentPosition());
+        //    telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
 
         telemetry.addData("Arm", robot.arm.getCurrentPosition());
         telemetry.addData("turret", robot.turret.getCurrentPosition());
@@ -97,11 +86,7 @@ public class Teleop extends OpMode {
         forwardPower = -gamepad1.left_stick_y; //FOrward and Back
         strafePower = -gamepad1.left_stick_x; //FOrward and Back
         //Gamepad1
-        if (invertDirection) {
-            forwardPower *= -1;
-            strafePower *= -1;
-            turnPower *= -1;
-        }
+
         if (Math.abs(gamepad1.right_stick_x) > 0.1 ) {
 
             robot.f_left.setPower(turnPower * maxLeftSpeed);
@@ -123,25 +108,21 @@ public class Teleop extends OpMode {
             robot.f_right.setPower(strafePower * maxRightSpeed);
             robot.b_right.setPower(-strafePower * maxRightSpeed);
         }
-//        else if(Math.abs(gamepad2.left_stick_x) > 0.1){
-//            robot.turret.setPower(gamepad2.left_stick_x * 0.5);
-//            lastArmPosition = robot.turret.getCurrentPosition();
-//        }
         // Gamepad 2
-            
-        
+        else if (Math.abs(gamepad2.left_stick_x) > 0.1) {
+            if (robot.arm.getCurrentPosition() < 500) {}
+            else {
+                robot.turret.setPower(gamepad2.left_stick_x * 0.2);
+            }
+        }
         else if (gamepad2.dpad_down) {
             moveArm(0.5, 0);
-            armPosition = 0;
         } else if (gamepad2.dpad_up) {
             moveArm(1, 2100);
-            armPosition = 3;
         } else if (gamepad2.y) {
             moveArm(1, 1500);
-            armPosition = 2;
         } else if (gamepad2.a) {
             moveArm(1, 1000);
-            armPosition = 1;
         }
         else if (gamepad1.right_trigger > 0.1) {
             robot.claw.setPosition(0);
@@ -154,28 +135,8 @@ public class Teleop extends OpMode {
             robot.b_left.setPower(0);
             robot.f_right.setPower(0);
             robot.b_right.setPower(0);
+            robot.turret.setPower(0);
         }
-        if (armPosition > 0){
-            if (gamepad2.left_bumper){
-                robot.turret.setTargetPosition(degreesToTicks(90));
-            }
-            else{
-                robot.turret.setTargetPosition(lastArmPosition);
-            }
-
-        }
-        else{
-            if (Math.cos(Math.toRadians(convertedArmPosition)) > 0) {
-                invertDirection = false;
-                robot.turret.setTargetPosition(0);
-
-            }
-            else {
-                robot.turret.setTargetPosition(180);
-                invertDirection = true;
-            }
-        }
-
 
     }
 
@@ -185,7 +146,7 @@ public class Teleop extends OpMode {
     @Override
     public void stop() {
         robot.arm.setPower(0);
-      robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public final void sleep(long milliseconds) {
@@ -200,15 +161,10 @@ public class Teleop extends OpMode {
         robot.arm.setPower(speed);
         robot.arm.setTargetPosition(target);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-     //   while (robot.arm.isBusy()) {
-     //       sleep(1);
-     //   }
-   //     robot.arm.setPower(0);
-    }
-    public int degreesToTicks(int deg){
-        // (int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * 360);
-        return ((int)(deg * positionConversionFactor)/360);
-
+        //   while (robot.arm.isBusy()) {
+        //       sleep(1);
+        //   }
+        //     robot.arm.setPower(0);
     }
 
 }
