@@ -79,6 +79,7 @@ public class Teleop extends OpMode {
         double convertedArmPosition = (int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * 360);
         telemetry.addData("turret position", robot.turret.getCurrentPosition());
         telemetry.addData("corrected position", convertedArmPosition);
+        telemetry.addData("armposition", armPosition);
 
 
     //    telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
@@ -152,10 +153,6 @@ public class Teleop extends OpMode {
         }
         if (armPosition > 0){
             if (Math.abs(gamepad2.left_stick_x) > 0.1 && convertedArmPosition < 270) {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.1);
-                lastArmPosition = robot.turret.getCurrentPosition();
-            }
-            else if (Math.abs(gamepad2.left_stick_x) < 0.1 && convertedArmPosition > 5) {
                 robot.turret.setPower(gamepad2.left_stick_x * 0.1);
                 lastArmPosition = robot.turret.getCurrentPosition();
             }
