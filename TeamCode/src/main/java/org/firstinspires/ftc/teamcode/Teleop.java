@@ -151,11 +151,11 @@ public class Teleop extends OpMode {
             robot.b_right.setPower(0);
         }
         if (armPosition > 0){
-            if (gamepad2.left_stick_x > 0.1 && convertedArmPosition < 270) {
+            if (Math.abs(gamepad2.left_stick_x) > 0.1 && convertedArmPosition < 270) {
                 robot.turret.setPower(gamepad2.left_stick_x * 0.1);
                 lastArmPosition = robot.turret.getCurrentPosition();
             }
-            else if (gamepad2.left_stick_x < -0.1 && convertedArmPosition > -5) {
+            else if (Math.abs(gamepad2.left_stick_x) < 0.1 && convertedArmPosition > 5) {
                 robot.turret.setPower(gamepad2.left_stick_x * 0.1);
                 lastArmPosition = robot.turret.getCurrentPosition();
             }
