@@ -9,6 +9,7 @@
 // |____|    \____\      |_____|      |____|      \____\  /___/             \___\ |___|    \_____|
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,14 +19,17 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 //Purpose: Teleop for qualifier robot
 //Original Code from 27th november 2022
 
-@TeleOp(name = "testTeleop")
+@Disabled
+@TeleOp(name = "ogTeleop")
 public class originalTeleOp extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
     float turnPower;
     float forwardPower;
     float strafePower;
-    double maxLeftSpeed = 1;
-    double maxRightSpeed = 1;
+    double maxLeftSpeed = 0.7;
+    double maxRightSpeed = 0.7;
+    double maxArm = 1;
+    double maxTurret = 0.15;
 
 
     // Code to run ONCE when the driver hits INIT
@@ -34,13 +38,6 @@ public class originalTeleOp extends OpMode {
 
         robot.init(hardwareMap);
 
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-        //  robot.gyro.calibrate();
-        //  while(robot.gyro.isCalibrating()) {
-        //      sleep(50);
-        //  }
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -49,10 +46,10 @@ public class originalTeleOp extends OpMode {
     //Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
     @Override
     public void init_loop() {
-        robot.b_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.b_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.f_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.f_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      //  robot.b_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      //  robot.b_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      //  robot.f_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+      //  robot.f_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //robot.turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -70,25 +67,31 @@ public class originalTeleOp extends OpMode {
     //Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
+        //Telemetry Debugging
 
-        //    telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
-        //    telemetry.addData("f_Right Encoder Position", robot.f_right.getCurrentPosition());
-        //    telemetry.addData("b_Left Encoder Position", robot.b_left.getCurrentPosition());
-        //    telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
+        // DRIVE MOTOR ENCODERS
+            telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
+            telemetry.addData("f_Right Encoder Position", robot.f_right.getCurrentPosition());
+            telemetry.addData("b_Left Encoder Position", robot.b_left.getCurrentPosition());
+            telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
 
+        // ARM & TURRET MOTOR ENCODERS
         telemetry.addData("Arm", robot.arm.getCurrentPosition());
         telemetry.addData("turret", robot.turret.getCurrentPosition());
+
+        // GYRO SENSOR HEADING
         //  telemetry.addData("gyro", robot.gyro.getHeading());
+
         telemetry.update();
+
+
         //Variables
-
         turnPower = -gamepad1.right_stick_x; //Turn robot
-        forwardPower = -gamepad1.left_stick_y; //FOrward and Back
-        strafePower = -gamepad1.left_stick_x; //FOrward and Back
+        forwardPower = -gamepad1.left_stick_y; //Forward and Back
+        strafePower = -gamepad1.left_stick_x; //Left to Right
+
         //Gamepad1
-
         if (Math.abs(gamepad1.right_stick_x) > 0.1 ) {
-
             robot.f_left.setPower(turnPower * maxLeftSpeed);
             robot.b_left.setPower(turnPower * maxLeftSpeed);
             robot.f_right.setPower(-turnPower * maxRightSpeed);
@@ -112,7 +115,7 @@ public class originalTeleOp extends OpMode {
         else if (Math.abs(gamepad2.left_stick_x) > 0.1) {
             if (robot.arm.getCurrentPosition() < 500) {}
             else {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.2);
+                robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
             }
         }
         else if (gamepad2.dpad_down) {
@@ -158,7 +161,7 @@ public class originalTeleOp extends OpMode {
     }
 
     public void moveArm(double speed, int target) {
-        robot.arm.setPower(speed);
+        robot.arm.setPower(speed * maxArm);
         robot.arm.setTargetPosition(target);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //   while (robot.arm.isBusy()) {

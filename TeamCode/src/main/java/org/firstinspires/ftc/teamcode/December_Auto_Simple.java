@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 
 @Autonomous
-public class December_Auto extends LinearOpMode {
+public class December_Auto_Simple extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFullBot robot = new HardwareFullBot();
 
@@ -142,26 +142,21 @@ public class December_Auto extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            strafeLeft(1,1500);
-            moveArm(1, 2100);
-            driveStraight(0.2, 200);
-            robot.claw.setPosition(0);
-            driveBack(0.2, 200);
+            strafeLeft(1,1700);
+            sleep(300);
             tagToTelemetry(tagOfInterest);
             if (tagOfInterest.id == MIDDLE){
 
             }
             if (tagOfInterest.id == LEFT){
-                strafeLeft(1,500);
-                driveBack(0.2, 700);
+                strafeLeft(1,200);
+                driveBack(1, 700);
 
             }
             if (tagOfInterest.id == RIGHT){
-                strafeLeft(1,400);
-                driveStraight(0.2, 700);
+                strafeLeft(1,200);
+                driveStraight(1, 700);
             }
-            moveArm(1, 0);
-
         }
 
     }
@@ -185,7 +180,7 @@ public class December_Auto extends LinearOpMode {
         robot.b_left.setPower(maxLeftSpeed * speed);
         robot.f_right.setPower(maxRightSpeed * speed);
         robot.b_right.setPower(maxRightSpeed * speed);
-        while (opModeIsActive() && robot.f_left.isBusy() && robot.f_right.isBusy()) {
+        while (opModeIsActive() && robot.f_left.isBusy() && robot.f_right.isBusy() && robot.b_left.isBusy() && robot.b_right.isBusy()) {
             idle();
         }
         robot.f_left.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);

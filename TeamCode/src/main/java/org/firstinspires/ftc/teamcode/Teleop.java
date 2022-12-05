@@ -9,6 +9,7 @@
 // |____|    \____\      |_____|      |____|      \____\  /___/             \___\ |___|    \_____|
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //Purpose: Teleop for qualifier robot
 
 @TeleOp(name = "Teleop")
+@Disabled
 public class Teleop extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
     float turnPower;
