@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -17,8 +16,7 @@ import java.util.ArrayList;
 
 
 @Autonomous
-@Disabled
-public class December_Auto extends LinearOpMode {
+public class Janurary_Auto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFullBot robot = new HardwareFullBot();
 
@@ -144,23 +142,32 @@ public class December_Auto extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            strafeLeft(1,1500);
-            moveArm(1, 2100);
-            driveStraight(0.2, 200);
+          //  strafeLeft(0.5,500);
+
+        //    strafeLeft(1,1500);
+            moveArm(1, -2800);  //3100 is maximum
+        /*    driveStraight(0.2, 200);
             robot.claw.setPosition(0);
             driveBack(0.2, 200);
             tagToTelemetry(tagOfInterest);
+            strafeLeft(1,500);*/
+            sleep(3000);
+            moveTurret(0.2, -170);
+            sleep(2000);
+            moveTurret(0.2, 0);
+            sleep(3000);
+            moveArm(0.2, 0);
             if (tagOfInterest.id == MIDDLE){
 
             }
             if (tagOfInterest.id == LEFT){
-                strafeLeft(1,500);
-                driveBack(0.2, 700);
+              //  strafeLeft(1,500);
+    //            driveBack(0.2, 700);
 
             }
             if (tagOfInterest.id == RIGHT){
-                strafeLeft(1,400);
-                driveStraight(0.2, 700);
+      //          strafeLeft(1,400);
+       //         driveStraight(0.2, 700);
             }
             moveArm(1, 0);
 
@@ -198,7 +205,7 @@ public class December_Auto extends LinearOpMode {
         robot.b_left.setPower(0);
         robot.f_right.setPower(0);
         robot.b_right.setPower(0);
-        }
+    }
     public void driveStraight(double speed, int distance){
         double maxLeftSpeed = 1;
         double maxRightSpeed = 1;
@@ -230,7 +237,7 @@ public class December_Auto extends LinearOpMode {
         robot.b_left.setPower(0);
         robot.f_right.setPower(0);
         robot.b_right.setPower(0);
-        }
+    }
 
     public void turnLeft(double speed, double distance){
         double maxLeftSpeed = 1;
@@ -355,7 +362,7 @@ public class December_Auto extends LinearOpMode {
         robot.b_left.setPower(0);
         robot.f_right.setPower(0);
         robot.b_right.setPower(0);
-        }
+    }
 
     /**
      * Strafe the robot left based on the given parameters speed and seconds.
@@ -404,15 +411,34 @@ public class December_Auto extends LinearOpMode {
         }
     }
 
-        public void moveArm(double speed, int target) {
-            robot.arm.setPower(speed);
-            robot.arm.setTargetPosition(target);
-            robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            while (robot.arm.isBusy()) {
-                sleep(1);
-            }
-            robot.arm.setPower(0);
+    public void moveArm(double speed, int target) {
+        robot.arm.setPower(speed);
+        robot.arm.setTargetPosition(target);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (robot.arm.isBusy()) {
+            sleep(1);
         }
+        robot.arm.setPower(0);
+    }
+
+    public void moveTurret(double speed, int target) {
+        robot.turret.setPower(speed);
+        robot.turret.setTargetPosition(target);
+        robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (robot.turret.getCurrentPosition() < target) {
+            while (opModeIsActive() && robot.turret.getCurrentPosition() < target) {
+                // sleep(1);
+            }
+        } else if (robot.turret.getCurrentPosition() > target) {
+            while (opModeIsActive() && robot.turret.getCurrentPosition() > target) {
+                // sleep(1);
+            }
+        } else{}/*
+        while (robot.arm.isBusy()) {
+            sleep(1);
+        }*/
+        robot.turret.setPower(0);
+    }
     void tagToTelemetry(AprilTagDetection detection)
     {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));

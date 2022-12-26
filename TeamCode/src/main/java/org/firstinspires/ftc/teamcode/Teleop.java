@@ -33,6 +33,7 @@ public class Teleop extends OpMode {
     int lastArmPosition = 0;
     final double positionConversionFactor = 8192.0;
     boolean invertDirection = false;
+    int timesPressed = 0;
 
     // Code to run ONCE when the driver hits INIT
     @Override
@@ -176,8 +177,33 @@ public class Teleop extends OpMode {
                 robot.turret.setTargetPosition(180);
                 invertDirection = true;
             }
-        }
 
+
+        }
+//        if (gamepad2.b){
+//            if (timesPressed == 0){
+//                robot.arm.setTargetPosition(1);
+//            }
+//            if (timesPressed == 1){
+//                robot.arm.setTargetPosition(1);
+//            }
+//            if (timesPressed == 2){
+//                robot.arm.setTargetPosition(1);
+//            }
+//            if (timesPressed == 3){
+//                robot.arm.setTargetPosition(1);
+//            }
+//            if (timesPressed == 4){
+//             robot.arm.setTargetPosition(1);
+//         }
+//         timesPressed++;
+//
+//     }
+//        if (gamepad2.x){
+//            timesPressed--;
+//        }
+//
+//
 
     }
 

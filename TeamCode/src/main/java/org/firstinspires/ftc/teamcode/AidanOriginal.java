@@ -29,7 +29,7 @@ public class AidanOriginal extends OpMode {
     double maxRightSpeed = .6;
     int armPosition = 0;
     int lastArmPosition = 0;
-    final double positionConversionFactor = 8192.0;
+    final double positionConversionFactor = 375;
     boolean invertDirection = false;
 
     // Code to run ONCE when the driver hits INIT
@@ -76,7 +76,7 @@ public class AidanOriginal extends OpMode {
     //Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
-        double convertedArmPosition = (int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * 360);
+        double convertedArmPosition = -(int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * 360);
         telemetry.addData("turret position", robot.turret.getCurrentPosition());
         telemetry.addData("corrected position", convertedArmPosition);
 
@@ -87,7 +87,7 @@ public class AidanOriginal extends OpMode {
         //    telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
 
         telemetry.addData("Arm", robot.arm.getCurrentPosition());
-        telemetry.addData("turret", robot.turret.getCurrentPosition());
+       // telemetry.addData("turret", robot.turret.getCurrentPosition());
         //  telemetry.addData("gyro", robot.gyro.getHeading());
         telemetry.update();
         //Variables
@@ -129,7 +129,7 @@ public class AidanOriginal extends OpMode {
             moveArm(0.5, 0);
             armPosition = 0;
         } else if (gamepad2.dpad_up) {
-            moveArm(1, 2100);
+            moveArm(1, -2100);
             armPosition = 3;
         } else if (gamepad2.y) {
             moveArm(1, 1500);
@@ -152,11 +152,11 @@ public class AidanOriginal extends OpMode {
         }
         if (armPosition > 0){
             if (gamepad2.left_stick_x > 0.1 && convertedArmPosition < 270) {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.1);
+                robot.turret.setPower(gamepad2.left_stick_x * 0.7);
                 lastArmPosition = robot.turret.getCurrentPosition();
             }
             else if (gamepad2.left_stick_x < -0.1 && convertedArmPosition > -5) {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.1);
+                robot.turret.setPower(gamepad2.left_stick_x * 0.7);
                 lastArmPosition = robot.turret.getCurrentPosition();
             }
             else{

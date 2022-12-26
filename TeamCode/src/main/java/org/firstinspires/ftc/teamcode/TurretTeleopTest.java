@@ -17,10 +17,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 //Created by Kyran 12/04/2022 @ 12:0pm
 //Purpose: Debugging Teleop
-
-@Disabled
-@TeleOp(name = "TempTeleop")
-public class TempTeleop extends OpMode {
+@TeleOp(name = "TurretTeleop")
+public class TurretTeleopTest extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
     float turnPower;
     float forwardPower;
@@ -28,10 +26,10 @@ public class TempTeleop extends OpMode {
     double maxLeftSpeed = 1;
     double maxRightSpeed = 1;
     double maxArm = 1;
-    double maxTurret = 0.3;
+    double maxTurret = 0.7;
     int armPosition = 0;
     int lastArmPosition = 0;
-    final double positionConversionFactor = 8192.0;
+    final double positionConversionFactor = 375;
     boolean invertDirection = false;
 
 
@@ -57,7 +55,7 @@ public class TempTeleop extends OpMode {
         robot.f_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       // robot.turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     }
@@ -91,6 +89,7 @@ public class TempTeleop extends OpMode {
         // TURRET DEGREE
         telemetry.addData("Turret Degrees", turretDegrees);
         telemetry.addData("invert?", invertDirection);
+        telemetry.addData("g2 left x", gamepad2.left_stick_x);
 
         telemetry.update();
 
@@ -128,13 +127,13 @@ public class TempTeleop extends OpMode {
             moveArm(0.5, 0);
             armPosition = 0;
         } else if (gamepad2.dpad_up) {
-            moveArm(1, 2100);
+            moveArm(1, -3300);
             armPosition = 3;
         } else if (gamepad2.y) {
-            moveArm(1, 1500);
+            moveArm(1, -1500);
             armPosition = 2;
         } else if (gamepad2.a) {
-            moveArm(1, 1000);
+            moveArm(1, -1000);
             armPosition = 1;
         } else if (gamepad1.right_trigger > 0.1) {
             robot.claw.setPosition(0);
@@ -144,17 +143,17 @@ public class TempTeleop extends OpMode {
             if (armPosition > 0) {
                 robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
             }
-        /*} else if (armPosition > 0) {
+       /* } else if (armPosition > 0) {
             if (gamepad2.left_stick_x > 0.1 && turretDegrees < 270) {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.1);
+                robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
                 lastArmPosition = robot.turret.getCurrentPosition();
             } else if (gamepad2.left_stick_x < -0.1 && turretDegrees > -5) {
-                robot.turret.setPower(gamepad2.left_stick_x * 0.1);
+                robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
                 lastArmPosition = robot.turret.getCurrentPosition();
             } else {
                 robot.turret.setTargetPosition(lastArmPosition);
-            }*/
-
+            }
+*/
         } else if (Math.cos(Math.toRadians(turretDegrees)) > 0) {
             invertDirection = false;
             robot.turret.setTargetPosition(0);
