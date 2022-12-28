@@ -70,6 +70,8 @@ public class AidanOriginal extends OpMode {
     @Override
     public void start() {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 
 
@@ -132,10 +134,10 @@ public class AidanOriginal extends OpMode {
             moveArm(1, -2100);
             armPosition = 3;
         } else if (gamepad2.y) {
-            moveArm(1, 1500);
+            moveArm(1, -1500);
             armPosition = 2;
         } else if (gamepad2.a) {
-            moveArm(1, 1000);
+            moveArm(1, -1000);
             armPosition = 1;
         }
         else if (gamepad1.right_trigger > 0.1) {
