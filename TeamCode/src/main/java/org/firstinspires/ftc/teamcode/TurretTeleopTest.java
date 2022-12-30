@@ -34,7 +34,7 @@ public class TurretTeleopTest extends OpMode {
     final double positionConversionFactor = 375;
     double convertedArmPosition;
     boolean invertDirection = false;
-    boolean lockMode = false;
+    boolean cycleMode = true;
 
 
     // Code to run ONCE when the driver hits INIT
@@ -43,6 +43,7 @@ public class TurretTeleopTest extends OpMode {
 
         robot.init(hardwareMap);
 
+        telemetry.addData("Mode", cycleMode);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -64,7 +65,7 @@ public class TurretTeleopTest extends OpMode {
         robot.f_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        if(lockMode) {
+        if(cycleMode) {
             robot.turret.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         } else {
@@ -77,7 +78,7 @@ public class TurretTeleopTest extends OpMode {
     @Override
     public void start() {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        if (lockMode) {
+        if (cycleMode) {
              robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
@@ -98,7 +99,8 @@ public class TurretTeleopTest extends OpMode {
         //    telemetry.addData("b_Right Encoder Position", robot.b_right.getCurrentPosition());
 
         telemetry.addData("Arm", robot.arm.getCurrentPosition());
-         telemetry.addData("invert", invertDirection);
+        telemetry.addData("Trigger", gamepad1.right_trigger);
+        telemetry.addData("invert", invertDirection);
         //  telemetry.addData("gyro", robot.gyro.getHeading());
         telemetry.update();
         //Variables
@@ -133,45 +135,68 @@ public class TurretTeleopTest extends OpMode {
             robot.f_right.setPower(strafePower * maxRightSpeed);
             robot.b_right.setPower(-strafePower * maxRightSpeed);
         }
-        // Gamepad 2
-
-
-        else if (gamepad2.dpad_down) {
-            moveArm(0.5, 0);
-            armPosition = 0;
-        } else if (gamepad2.dpad_up) {
-            moveArm(1, -2800);
-            armPosition = 3;
-        } else if (gamepad2.y) {
-            moveArm(1, -2100);
-            armPosition = 2;
-        } else if (gamepad2.a) {
-            moveArm(1, -1250);
-            armPosition = 1;
-        }
         else if (gamepad1.right_trigger > 0.1) {
             robot.claw.setPosition(0);
+            sleep(500);
         }
         else if (gamepad1.left_trigger > 0.1){
             robot.claw.setPosition(0.3);
+            sleep(500);
         }
-        else if (!lockMode && Math.abs(gamepad2.left_stick_x) > 0.1) {
+      //   Gamepad 2
+       /*cheese yourmom
+        how to get a girlfriend
+        step one do nothing for 18 years
+      big chungus wil haunt you for 2000 days*/
+        else if (gamepad2.dpad_down) {
+            moveArm(0.5, 0);
+            if (cycleMode) {
+                moveTurret(maxTurret, 0);
+            }
+            armPosition = 0;
+            sleep(500);
+        } else if (gamepad2.dpad_up) {
+            moveArm(1, -3100); //-2800
+            sleep(500);
+            if (cycleMode) {
+                moveTurret(maxTurret, -188);
+            }
+            armPosition = 3;
+            sleep(500);
+        } else if (gamepad2.y) {
+            moveArm(1, -2100);
+            sleep(500);
+            if (cycleMode) {
+                moveTurret(maxTurret, -188);
+            }
+            armPosition = 2;
+            sleep(500);
+        } else if (gamepad2.a) {
+            moveArm(1, -1250);
+            sleep(500);
+            if (cycleMode) {
+                moveTurret(maxTurret, -188);
+            }
+            armPosition = 1;
+            sleep(500);
+        }
+        else if (!cycleMode && Math.abs(gamepad2.left_stick_x) > 0.1) {
             if (armPosition > 0) {
                     robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
             }
         }
-        else if (lockMode && gamepad2.left_bumper) {
-            if (armPosition > 0) {
-                moveTurret(maxTurret, -94);//(-94 * nextninety));
+    //    else if (cycleMode && gamepad2.left_bumper) {
+    //        if (armPosition > 0) {
+    //            moveTurret(maxTurret, -94);//(-94 * nextninety));
              //   nextninety++;
-            }
-        }
-        else if (lockMode && gamepad2.right_bumper) {
-            if (armPosition > 0) {
-                moveTurret(maxTurret, 94);//(94 * nextninety));
+    //        }
+    //    }
+    //    else if (cycleMode && gamepad2.right_bumper) {
+    //        if (armPosition > 0) {
+    //            moveTurret(maxTurret, 94);//(94 * nextninety));
             //    nextninety--;
-            }
-        }
+    //        }
+    //    }
         else {
             robot.f_left.setPower(0);
             robot.b_left.setPower(0);
@@ -205,9 +230,9 @@ public class TurretTeleopTest extends OpMode {
                 invertDirection = true;
             }
         }*/
-        if(nextninety == 0) {
-            nextninety = 1;
-        }
+     //   if(nextninety == 0) {
+      //      nextninety = 1;
+      //  }
         if (Math.cos(Math.toRadians(convertedArmPosition)) > 0) {
             invertDirection = false;
 
