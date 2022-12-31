@@ -35,7 +35,8 @@ public class TurretTeleopTest extends OpMode {
     double convertedArmPosition;
     boolean invertDirection = false;
     boolean cycleMode = true;
-
+    boolean turretOn = true;
+    boolean emidriving = true;
 
     // Code to run ONCE when the driver hits INIT
     @Override
@@ -114,6 +115,9 @@ public class TurretTeleopTest extends OpMode {
             strafePower *= -1;
             turnPower *= -1;
         }
+        if(gamepad2.left_trigger > 0.1 && gamepad2.right_trigger > 0.1) {
+            turretOn = !turretOn;
+        }
         if (Math.abs(gamepad1.right_stick_x) > 0.1) {
 
             robot.f_left.setPower(turnPower * maxLeftSpeed);
@@ -128,12 +132,26 @@ public class TurretTeleopTest extends OpMode {
             robot.f_right.setPower(forwardPower * maxRightSpeed);
             robot.b_right.setPower(forwardPower * maxRightSpeed);
         }
-        else if (Math.abs(gamepad1.left_stick_x) > 0.1) {
+        else if (!emidriving && Math.abs(gamepad1.left_stick_x) > 0.1) {
             // Forward (Left stick Y)
             robot.f_left.setPower(-strafePower * maxLeftSpeed);
             robot.b_left.setPower(strafePower * maxLeftSpeed);
             robot.f_right.setPower(strafePower * maxRightSpeed);
             robot.b_right.setPower(-strafePower * maxRightSpeed);
+        }
+        else if (gamepad1.dpad_left && emidriving) {
+            // Forward (Left stick Y)
+            robot.f_left.setPower(-maxLeftSpeed);
+            robot.b_left.setPower(maxLeftSpeed);
+            robot.f_right.setPower(maxRightSpeed);
+            robot.b_right.setPower(-maxRightSpeed);
+        }
+        else if (gamepad1.dpad_right && emidriving) {
+            // Forward (Left stick Y)
+            robot.f_left.setPower(maxLeftSpeed);
+            robot.b_left.setPower(-maxLeftSpeed);
+            robot.f_right.setPower(-maxRightSpeed);
+            robot.b_right.setPower(maxRightSpeed);
         }
         else if (gamepad1.right_trigger > 0.1) {
             robot.claw.setPosition(0);
@@ -144,41 +162,42 @@ public class TurretTeleopTest extends OpMode {
             sleep(500);
         }
       //   Gamepad 2
-       /*cheese yourmom
-        how to get a girlfriend
-        step one do nothing for 18 years
+       /*cheese
       big chungus wil haunt you for 2000 days*/
         else if (gamepad2.dpad_down) {
             moveArm(0.5, 0);
-            if (cycleMode) {
+            if (cycleMode && turretOn) {
                 moveTurret(maxTurret, 0);
             }
             armPosition = 0;
-            sleep(500);
+            sleep(300);
         } else if (gamepad2.dpad_up) {
             moveArm(1, -3100); //-2800
             sleep(500);
-            if (cycleMode) {
+            if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
             }
             armPosition = 3;
-            sleep(500);
+            sleep(300);
         } else if (gamepad2.y) {
             moveArm(1, -2100);
             sleep(500);
-            if (cycleMode) {
+            if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
             }
             armPosition = 2;
+            sleep(300);
+        } else if (gamepad2.b) {
+            moveArm(1, -1350);
             sleep(500);
-        } else if (gamepad2.a) {
-            moveArm(1, -1250);
-            sleep(500);
-            if (cycleMode) {
+            if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
             }
+            //yourmom
             armPosition = 1;
-            sleep(500);
+            sleep(300);
+        } else if (gamepad2.a) {
+            moveArm(1, -350);
         }
         else if (!cycleMode && Math.abs(gamepad2.left_stick_x) > 0.1) {
             if (armPosition > 0) {
