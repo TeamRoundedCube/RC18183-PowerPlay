@@ -38,6 +38,7 @@ public class TurretTeleopTest extends OpMode {
     boolean cycleMode = true;
     boolean turretOn = true;
     boolean emidriving = true;
+    boolean recentPress = false;
 
     // Code to run ONCE when the driver hits INIT
     @Override
@@ -103,6 +104,8 @@ public class TurretTeleopTest extends OpMode {
         telemetry.addData("Arm", robot.arm.getCurrentPosition());
         telemetry.addData("Trigger", gamepad1.right_trigger);
         telemetry.addData("invert", invertDirection);
+        telemetry.addData("TimesPressed", timesPressed);
+
         //  telemetry.addData("gyro", robot.gyro.getHeading());
         telemetry.update();
         //Variables
@@ -163,26 +166,29 @@ public class TurretTeleopTest extends OpMode {
             sleep(500);
         }
       //   Gamepad 2
-       /*cheese
-      big chungus wil haunt you for 2000 days*/
         else if (gamepad2.left_bumper){
+            recentPress = true;
             if (timesPressed == 0){
                 moveArm(0.5, -1000);
+
             }
             if (timesPressed == 1){
                 moveArm(0.5, -800);
+
             }
             if (timesPressed == 2){
                 moveArm(0.5, -600);
+
             }
             if (timesPressed == 3){
                 moveArm(0.5, -400);
-            }
-            if (timesPressed == 4){
-                moveArm(0.5, -200);
-            }
-         timesPressed++;
 
+            }
+            if (timesPressed == 4) {
+                moveArm(0.5, -200);
+
+            }
+            timesPressed++;
      }
         else if (gamepad2.right_bumper){
             timesPressed--;
@@ -282,6 +288,10 @@ public class TurretTeleopTest extends OpMode {
         else {
             invertDirection = true;
         }
+  //      if(elapsed time is passed 5 secoinds) {
+  //          reset timer;
+  //          recentPress = false;
+  //      }
 
     }
 

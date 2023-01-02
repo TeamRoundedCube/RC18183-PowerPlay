@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 
 @Autonomous
-public class Janurary_Auto extends LinearOpMode {
+public class Janurary_Auto_Simple extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFullBot robot = new HardwareFullBot();
 
@@ -140,10 +140,7 @@ public class Janurary_Auto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-
-            strafeLeft(0.5,1730); //1430
-            strafeRight(0.5, 300);
-            sleep(200);
+            strafeLeft(0.5,1430); //1430
             moveArm(1, -2100);
             driveStraight(0.3,100);
             robot.claw.setPosition(0);
@@ -151,24 +148,9 @@ public class Janurary_Auto extends LinearOpMode {
             driveStraight(0.3,-100);
             robot.claw.setPosition(0.3);
             sleep(500);
-            moveTurret(0.4, -188);
-            moveArm(0.7,-390);
-            strafeLeft(0.5,430);
-            robot.claw.setPosition(0);
-            sleep(500);
-            driveStraight(0.5, -1000);
-            robot.claw.setPosition(0.3);
-            sleep(500);
-            moveArm(1, -1100);
-            driveStraight(0.5, 1280);
-            moveArm(1, -3000);
-            moveTurret(-0.4, -94);
-            strafeRight(0.3, 200);
-            robot.claw.setPosition(0);
-            sleep(500);
-            strafeLeft(0.3, 200);
-            moveTurret(-0.4, 0);
-            moveArm(0.7, 0);
+            strafeRight(0.5,450); //1430
+            sleep(200);
+
 //your mother//
             //    strafeLeft(1,1500);
 
@@ -185,16 +167,16 @@ public class Janurary_Auto extends LinearOpMode {
           //  moveTurret(0.2, 0);
            // sleep(3000);
            // moveArm(0.2, 0);
-            if (tagOfInterest.id == MIDDLE){
-                driveBack(0.5, 400);
+            if (tagOfInterest.id == MIDDLE) {
+
             }
             if (tagOfInterest.id == LEFT){
               //  strafeLeft(1,500);
-                driveStraight(0.5, -1000);
+                driveStraight(0.5, -700);
             }
             if (tagOfInterest.id == RIGHT){
       //          strafeLeft(1,400);
-                driveStraight(0.5, 400);
+                driveStraight(0.5, 600);
             }
             if (tagOfInterest.id != MIDDLE || tagOfInterest.id != LEFT || tagOfInterest.id != RIGHT){
               //  driveBack(0.5, 400);
