@@ -136,27 +136,33 @@ public class Janurary_Auto extends LinearOpMode {
             robot.claw.setPosition(0.3);
         }
 
-
+//
 
         waitForStart();
 
         if (opModeIsActive()) {
 
-          //  strafeLeft(0.5,500);
+            strafeLeft(0.5,1500);
+            moveArm(1, -2100);
+            driveStraight(0.3,100);
+            robot.claw.setPosition(0);
+            moveArm (1,0) ;
 
         //    strafeLeft(1,1500);
-            moveArm(1, -2800);  //3100 is maximum
+
+          //  moveArm(1, -2800);  //3100 is maximum
         /*    driveStraight(0.2, 200);
             robot.claw.setPosition(0);
             driveBack(0.2, 200);
             tagToTelemetry(tagOfInterest);
             strafeLeft(1,500);*/
-            sleep(3000);
-            moveTurret(0.2, -170);
-            sleep(2000);
-            moveTurret(0.2, 0);
-            sleep(3000);
-            moveArm(0.2, 0);
+          //  sleep(3000);
+
+          //  moveTurret(0.4, -170);
+          //  sleep(2000);
+          //  moveTurret(0.2, 0);
+           // sleep(3000);
+           // moveArm(0.2, 0);
             if (tagOfInterest.id == MIDDLE){
 
             }
@@ -420,7 +426,16 @@ public class Janurary_Auto extends LinearOpMode {
         }
         robot.arm.setPower(0);
     }
+    public void moveTurret(double speed, int target) {
+        robot.turret.setPower(speed);
+        // robot.turret.setTargetPosition((target/360) * (int)positionConversionFactor);
+        robot.turret.setTargetPosition(target);
+        robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //       while (robot.turret.isBusy()) {
 
+        //        }
+        //         robot.turret.setPower(0);
+    }/*
     public void moveTurret(double speed, int target) {
         robot.turret.setPower(speed);
         robot.turret.setTargetPosition(target);
@@ -437,8 +452,8 @@ public class Janurary_Auto extends LinearOpMode {
         while (robot.arm.isBusy()) {
             sleep(1);
         }*/
-        robot.turret.setPower(0);
-    }
+    //    robot.turret.setPower(0);
+  //  }
     void tagToTelemetry(AprilTagDetection detection)
     {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));

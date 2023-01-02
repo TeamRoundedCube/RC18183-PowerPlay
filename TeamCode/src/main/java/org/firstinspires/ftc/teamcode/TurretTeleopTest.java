@@ -31,6 +31,7 @@ public class TurretTeleopTest extends OpMode {
     int armPosition = 0;
     int nextninety = 1;
     //int lastArmPosition = 0;
+    int timesPressed = 0;
     final double positionConversionFactor = 375;
     double convertedArmPosition;
     boolean invertDirection = false;
@@ -164,8 +165,30 @@ public class TurretTeleopTest extends OpMode {
       //   Gamepad 2
        /*cheese
       big chungus wil haunt you for 2000 days*/
+        else if (gamepad2.left_bumper){
+            if (timesPressed == 0){
+                moveArm(0.5, -1000);
+            }
+            if (timesPressed == 1){
+                moveArm(0.5, -800);
+            }
+            if (timesPressed == 2){
+                moveArm(0.5, -600);
+            }
+            if (timesPressed == 3){
+                moveArm(0.5, -400);
+            }
+            if (timesPressed == 4){
+                moveArm(0.5, -200);
+            }
+         timesPressed++;
+
+     }
+        else if (gamepad2.right_bumper){
+            timesPressed--;
+        }
         else if (gamepad2.dpad_down) {
-            moveArm(0.5, 0);
+            moveArm(0.7, 0);
             if (cycleMode && turretOn) {
                 moveTurret(maxTurret, 0);
             }
