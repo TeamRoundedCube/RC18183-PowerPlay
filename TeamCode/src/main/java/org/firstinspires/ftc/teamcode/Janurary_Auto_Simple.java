@@ -150,7 +150,7 @@ public class Janurary_Auto_Simple extends LinearOpMode {
             sleep(500);
             strafeRight(0.5,450); //1430
             sleep(200);
-
+            moveArm(1, 0);
 //your mother//
             //    strafeLeft(1,1500);
 
@@ -168,17 +168,14 @@ public class Janurary_Auto_Simple extends LinearOpMode {
            // sleep(3000);
            // moveArm(0.2, 0);
             if (tagOfInterest.id == MIDDLE) {
-                moveArm(1, 0);
             }
             if (tagOfInterest.id == LEFT){
               //  strafeLeft(1,500);
                 driveStraight(0.5, -700);
-                moveArm(1, 0);
             }
             if (tagOfInterest.id == RIGHT){
       //          strafeLeft(1,400);
                 driveStraight(0.5, 600);
-                moveArm(1, 0);
             }
             if (tagOfInterest.id != MIDDLE || tagOfInterest.id != LEFT || tagOfInterest.id != RIGHT){
               //  driveBack(0.5, 400);
