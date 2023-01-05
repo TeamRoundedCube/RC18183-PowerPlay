@@ -29,14 +29,12 @@ public class TurretTeleopTest extends OpMode {
     double maxRightSpeed = .6;
     double maxTurret = 0.4;
     int armPosition = 0;
-    int nextninety = 1;
-    //int lastArmPosition = 0;
     int timesPressed = 0;
     final double positionConversionFactor = 375;
     double convertedArmPosition;
     boolean invertDirection = false;
     boolean cycleMode = true;
-    boolean turretOn = true;
+    boolean turretOn = false;
     boolean emidriving = true;
     boolean recentPress = false;
 
@@ -159,14 +157,36 @@ public class TurretTeleopTest extends OpMode {
         }
         else if (gamepad1.right_trigger > 0.1) {
             robot.claw.setPosition(0);
-            sleep(500);
+          //  sleep(500);
         }
         else if (gamepad1.left_trigger > 0.1){
             robot.claw.setPosition(0.3);
-            sleep(500);
+         //   sleep(500);
+        }
+        else if (gamepad1.a) {
+            moveArm(0.7,-420);
+        }
+        else if (gamepad1.b) {
+            moveArm(0.7,-290);
+        }
+        else if (gamepad1.y) {
+            moveArm(0.7,-150);
+        }
+        else if (gamepad1.x) {
+            moveArm(0.7,-50);
+        }
+        else if (gamepad1.right_bumper) {
+            moveArm(0.7,-1000);
+        }
+        else {
+            robot.f_left.setPower(0);
+            robot.b_left.setPower(0);                //Need Separate If statements for each controller to prevent malfunction
+            robot.f_right.setPower(0);
+            robot.b_right.setPower(0);
         }
       //   Gamepad 2
-        else if (gamepad2.left_bumper){
+        //else
+            if (gamepad2.left_bumper){
             recentPress = true;
             if (timesPressed == 0){
                 moveArm(0.5, -1000);
@@ -209,7 +229,7 @@ public class TurretTeleopTest extends OpMode {
             armPosition = 3;
             sleep(300);
         } else if (gamepad2.y) {
-            moveArm(1, -2100);
+            moveArm(1, -2200);
             sleep(500);
             if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
@@ -246,10 +266,10 @@ public class TurretTeleopTest extends OpMode {
     //        }
     //    }
         else {
-            robot.f_left.setPower(0);
+       /*     robot.f_left.setPower(0);
             robot.b_left.setPower(0);
             robot.f_right.setPower(0);
-            robot.b_right.setPower(0);
+            robot.b_right.setPower(0);*/
             robot.turret.setPower(0);
 
         }
