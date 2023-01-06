@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //Created by Kyran 11/20/2022 @ 2:09pm
 //Purpose: Teleop for qualifier robot
 
-@TeleOp(name = "Teleop")
+@TeleOp(name = "brokeTeleop")
 @Disabled
 public class Teleop extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
@@ -152,15 +152,18 @@ public class Teleop extends OpMode {
         else if (gamepad1.left_trigger > 0.1){
             robot.claw.setPosition(0.3);
         }
+        if (gamepad2.b){
+            robot.turret.setTargetPosition(2000);
+        }
         else {
             robot.f_left.setPower(0);
             robot.b_left.setPower(0);
             robot.f_right.setPower(0);
             robot.b_right.setPower(0);
         }
-        if (armPosition > 0){
-            if (gamepad2.left_bumper){
-                robot.turret.setTargetPosition(degreesToTicks(90));
+        if (armPosition >= 0){
+            if (gamepad2.b){
+                robot.turret.setTargetPosition(2000);
             }
             else{
                 robot.turret.setTargetPosition(lastArmPosition);

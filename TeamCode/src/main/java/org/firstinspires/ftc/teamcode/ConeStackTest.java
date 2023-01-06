@@ -12,6 +12,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import java.util.ArrayList;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -19,9 +20,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //Created by XXXX XX/XX/2022 @ X:XXpm
 //Purpose: Teleop for qualifier robot
 
-@TeleOp(name = "TurretTeleop")
-public class TurretTeleopTest extends OpMode {
+@TeleOp(name = "ConeTest")
+public class ConeStackTest extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
+    ArrayList<Boolean> booleanArray = new ArrayList<Boolean>();
     float turnPower;
     float forwardPower;
     float strafePower;
@@ -29,14 +31,19 @@ public class TurretTeleopTest extends OpMode {
     double maxRightSpeed = .6;
     double maxTurret = 0.4;
     int armPosition = 0;
+    int nextninety = 1;
+    //int lastArmPosition = 0;
     int timesPressed = 0;
     final double positionConversionFactor = 375;
     double convertedArmPosition;
     boolean invertDirection = false;
     boolean cycleMode = true;
-    boolean turretOn = false;
-    boolean emidriving = true;
+    boolean turretOn = true;
+    boolean emiDriving = true;
     boolean recentPress = false;
+    boolean leftBPressed = ifPressed(gamepad2.left_bumper);
+    boolean rightBPressed = ifPressed(gamepad2.right_bumper);
+
 
     // Code to run ONCE when the driver hits INIT
     @Override
@@ -53,8 +60,8 @@ public class TurretTeleopTest extends OpMode {
         //      sleep(50);
         //  }
         // Tell the driver that initialization is complete.
-     //   telemetry.addData("Status", "Initialized");
-       // telemetry.update();
+        //   telemetry.addData("Status", "Initialized");
+        // telemetry.update();
     }
 
     //Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
@@ -80,7 +87,7 @@ public class TurretTeleopTest extends OpMode {
     public void start() {
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         if (cycleMode) {
-             robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
 
@@ -88,10 +95,12 @@ public class TurretTeleopTest extends OpMode {
     //Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
     @Override
     public void loop() {
+
+
         convertedArmPosition = (int)(((double)robot.turret.getCurrentPosition() / (double)positionConversionFactor) * -360);
         telemetry.addData("turret position", robot.turret.getCurrentPosition());
         telemetry.addData("corrected position", convertedArmPosition);
- //       telemetry.addData("leftstickx", gamepad2.left_stick_x);
+        //       telemetry.addData("leftstickx", gamepad2.left_stick_x);
 
 
         //    telemetry.addData("f_Left Encoder Position", robot.f_left.getCurrentPosition());
@@ -134,21 +143,21 @@ public class TurretTeleopTest extends OpMode {
             robot.f_right.setPower(forwardPower * maxRightSpeed);
             robot.b_right.setPower(forwardPower * maxRightSpeed);
         }
-        else if (!emidriving && Math.abs(gamepad1.left_stick_x) > 0.1) {
+        else if (!emiDriving && Math.abs(gamepad1.left_stick_x) > 0.1) {
             // Forward (Left stick Y)
             robot.f_left.setPower(-strafePower * maxLeftSpeed);
             robot.b_left.setPower(strafePower * maxLeftSpeed);
             robot.f_right.setPower(strafePower * maxRightSpeed);
             robot.b_right.setPower(-strafePower * maxRightSpeed);
         }
-        else if (gamepad1.dpad_left && emidriving) {
+        else if (gamepad1.dpad_left && emiDriving) {
             // Forward (Left stick Y)
             robot.f_left.setPower(-maxLeftSpeed);
             robot.b_left.setPower(maxLeftSpeed);
             robot.f_right.setPower(maxRightSpeed);
             robot.b_right.setPower(-maxRightSpeed);
         }
-        else if (gamepad1.dpad_right && emidriving) {
+        else if (gamepad1.dpad_right && emiDriving) {
             // Forward (Left stick Y)
             robot.f_left.setPower(maxLeftSpeed);
             robot.b_left.setPower(-maxLeftSpeed);
@@ -156,38 +165,22 @@ public class TurretTeleopTest extends OpMode {
             robot.b_right.setPower(maxRightSpeed);
         }
         else if (gamepad1.right_trigger > 0.1) {
-            robot.claw.setPosition(0.4);
-          //  sleep(500);
+            robot.claw.setPosition(0);
+            sleep(500);
         }
         else if (gamepad1.left_trigger > 0.1){
-            robot.claw.setPosition(0.7);
-         //   sleep(500);
+            robot.claw.setPosition(0.3);
+            sleep(500);
         }
-        else if (gamepad1.a) {
-            moveArm(0.7,-420);
+        //   Gamepad 2
+        else if (gamepad2.left_bumper){
+            leftBPressed = true;
+            if(leftBPressed){
+                timesPressed++;
+                leftBPressed = false;
+            }
         }
-        else if (gamepad1.b) {
-            moveArm(0.7,-290);
-        }
-        else if (gamepad1.y) {
-            moveArm(0.7,-150);
-        }
-        else if (gamepad1.x) {
-            moveArm(0.7,-50);
-        }
-        else if (gamepad1.right_bumper) {
-            moveArm(0.7,-1000);
-        }
-        else {
-            robot.f_left.setPower(0);
-            robot.b_left.setPower(0);                //Need Separate If statements for each controller to prevent malfunction
-            robot.f_right.setPower(0);
-            robot.b_right.setPower(0);
-        }
-      //   Gamepad 2
-        //else
-            if (gamepad2.left_bumper){
-            recentPress = true;
+        if (timesPressed == 0){
             if (timesPressed == 0){
                 moveArm(0.5, -1000);
 
@@ -208,8 +201,9 @@ public class TurretTeleopTest extends OpMode {
                 moveArm(0.5, -200);
 
             }
-            timesPressed++;
-     }
+        }
+
+
         else if (gamepad2.right_bumper){
             timesPressed--;
         }
@@ -229,7 +223,7 @@ public class TurretTeleopTest extends OpMode {
             armPosition = 3;
             sleep(300);
         } else if (gamepad2.y) {
-            moveArm(1, -2200);
+            moveArm(1, -2100);
             sleep(500);
             if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
@@ -250,26 +244,26 @@ public class TurretTeleopTest extends OpMode {
         }
         else if (!cycleMode && Math.abs(gamepad2.left_stick_x) > 0.1) {
             if (armPosition > 0) {
-                    robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
+                robot.turret.setPower(gamepad2.left_stick_x * maxTurret);
             }
         }
-    //    else if (cycleMode && gamepad2.left_bumper) {
-    //        if (armPosition > 0) {
-    //            moveTurret(maxTurret, -94);//(-94 * nextninety));
-             //   nextninety++;
-    //        }
-    //    }
-    //    else if (cycleMode && gamepad2.right_bumper) {
-    //        if (armPosition > 0) {
-    //            moveTurret(maxTurret, 94);//(94 * nextninety));
-            //    nextninety--;
-    //        }
-    //    }
+        //    else if (cycleMode && gamepad2.left_bumper) {
+        //        if (armPosition > 0) {
+        //            moveTurret(maxTurret, -94);//(-94 * nextninety));
+        //   nextninety++;
+        //        }
+        //    }
+        //    else if (cycleMode && gamepad2.right_bumper) {
+        //        if (armPosition > 0) {
+        //            moveTurret(maxTurret, 94);//(94 * nextninety));
+        //    nextninety--;
+        //        }
+        //    }
         else {
-       /*     robot.f_left.setPower(0);
+            robot.f_left.setPower(0);
             robot.b_left.setPower(0);
             robot.f_right.setPower(0);
-            robot.b_right.setPower(0);*/
+            robot.b_right.setPower(0);
             robot.turret.setPower(0);
 
         }
@@ -298,9 +292,9 @@ public class TurretTeleopTest extends OpMode {
                 invertDirection = true;
             }
         }*/
-     //   if(nextninety == 0) {
-      //      nextninety = 1;
-      //  }
+        //   if(nextninety == 0) {
+        //      nextninety = 1;
+        //  }
         if (Math.cos(Math.toRadians(convertedArmPosition)) > 0) {
             invertDirection = false;
 
@@ -308,10 +302,10 @@ public class TurretTeleopTest extends OpMode {
         else {
             invertDirection = true;
         }
-  //      if(elapsed time is passed 5 secoinds) {
-  //          reset timer;
-  //          recentPress = false;
-  //      }
+        //      if(elapsed time is passed 5 secoinds) {
+        //          reset timer;
+        //          recentPress = false;
+        //      }
 
     }
 
@@ -343,12 +337,17 @@ public class TurretTeleopTest extends OpMode {
     }
     public void moveTurret(double speed, int target) {
         robot.turret.setPower(speed);
-       // robot.turret.setTargetPosition((target/360) * (int)positionConversionFactor);
+        // robot.turret.setTargetPosition((target/360) * (int)positionConversionFactor);
         robot.turret.setTargetPosition(target);
         robot.turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    //       while (robot.turret.isBusy()) {
+        //       while (robot.turret.isBusy()) {
 
-   //        }
-    //         robot.turret.setPower(0);
+        //        }
+        //         robot.turret.setPower(0);
     }
+    private boolean ifPressed(boolean button){
+        boolean output = false;
+        return output;
+    }
+
 }
