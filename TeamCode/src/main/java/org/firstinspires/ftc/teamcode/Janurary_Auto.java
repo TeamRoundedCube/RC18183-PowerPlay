@@ -133,7 +133,7 @@ public class Janurary_Auto extends LinearOpMode {
             telemetry.addData("Left Encoder Position", robot.f_left.getCurrentPosition());
             telemetry.addData("Right Encoder Position", robot.f_right.getCurrentPosition());            telemetry.update();
             sleep(20);
-            robot.claw.setPosition(0.3);
+            robot.claw.setPosition(0.7);
         }
 
 
@@ -146,25 +146,25 @@ public class Janurary_Auto extends LinearOpMode {
             sleep(200);
             moveArm(1, -2100);
             driveStraight(0.3,100);
-            robot.claw.setPosition(0);
+            robot.claw.setPosition(0.4);
             sleep(500);
             driveStraight(0.3,-100);
-            robot.claw.setPosition(0.3);
+            robot.claw.setPosition(0.7);
             sleep(500);
             moveTurret(0.4, -188);
             moveArm(0.7,-390);
             strafeLeft(0.5,430);
-            robot.claw.setPosition(0);
+            robot.claw.setPosition(0.4);
             sleep(500);
             driveStraight(0.5, -1000);
-            robot.claw.setPosition(0.3);
+            robot.claw.setPosition(0.7);
             sleep(500);
             moveArm(1, -1100);
             driveStraight(0.5, 1280);
             moveArm(1, -3000);
             moveTurret(-0.4, -94);
             strafeRight(0.3, 200);
-            robot.claw.setPosition(0);
+            robot.claw.setPosition(0.4);
             sleep(500);
             strafeLeft(0.3, 200);
             moveTurret(-0.4, 0);

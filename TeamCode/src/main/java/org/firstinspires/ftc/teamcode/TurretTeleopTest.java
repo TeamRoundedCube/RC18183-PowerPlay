@@ -164,7 +164,7 @@ public class TurretTeleopTest extends OpMode {
          //   sleep(500);
         }
         else if (gamepad1.a) {
-            moveArm(0.7,-420);
+            moveArm(0.7,-520);
         }
         else if (gamepad1.b) {
             moveArm(0.7,-290);

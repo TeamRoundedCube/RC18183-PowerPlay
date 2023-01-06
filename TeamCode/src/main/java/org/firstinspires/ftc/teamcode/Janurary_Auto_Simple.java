@@ -133,30 +133,31 @@ public class Janurary_Auto_Simple extends LinearOpMode {
             telemetry.addData("Left Encoder Position", robot.f_left.getCurrentPosition());
             telemetry.addData("Right Encoder Position", robot.f_right.getCurrentPosition());            telemetry.update();
             sleep(20);
-            robot.claw.setPosition(0.3);
+            robot.claw.setPosition(0.7);
         }
 
 
         waitForStart();
 
         if (opModeIsActive()) {
-            strafeLeft(0.5,1430); //1430
-            moveArm(1, -2100);
-            driveStraight(0.3,100);
-            robot.claw.setPosition(0);
+            strafeLeft(0.5,1440); //1430
+            moveArm(1, -2300);
+            driveStraight(0.3,90);
+            robot.claw.setPosition(0.4);
             sleep(500);
-            driveStraight(0.3,-100);
-            robot.claw.setPosition(0.3);
+            driveStraight(0.3,-90);
+            robot.claw.setPosition(0.7);
             sleep(500);
             strafeRight(0.5,450); //1430
             sleep(200);
+            moveTurret(0.4, 0);
             moveArm(1, 0);
 //your mother//
             //    strafeLeft(1,1500);
 
           //  moveArm(1, -2800);  //3100 is maximum
         /*    driveStraight(0.2, 200);
-            robot.claw.setPosition(0);
+            robot.claw.setPosition(0.3);
             driveBack(0.2, 200);
             tagToTelemetry(tagOfInterest);
             strafeLeft(1,500);*/
