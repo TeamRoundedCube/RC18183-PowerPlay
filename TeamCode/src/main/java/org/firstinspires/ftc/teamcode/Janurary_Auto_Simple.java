@@ -176,7 +176,7 @@ public class Janurary_Auto_Simple extends LinearOpMode {
             }
             if (tagOfInterest.id == RIGHT){
       //          strafeLeft(1,400);
-                driveStraight(0.5, 600);
+                driveStraight(0.5, 650);
             }
             if (tagOfInterest.id != MIDDLE || tagOfInterest.id != LEFT || tagOfInterest.id != RIGHT){
               //  driveBack(0.5, 400);
