@@ -229,7 +229,7 @@ public class TurretTeleopTest extends OpMode {
             armPosition = 3;
             sleep(300);
         } else if (gamepad2.y) {
-            moveArm(1, -2200);
+            moveArm(1, -2300);
             sleep(500);
             if (cycleMode && turretOn) {
                 moveTurret(maxTurret, -188);
