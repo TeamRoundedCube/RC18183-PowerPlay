@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,14 +14,14 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Disabled
+
 @Autonomous
-public class AadilDoubleConeAuto extends LinearOpMode {
+public class Janurary_Auto_Simple_Right extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFullBot robot = new HardwareFullBot();
 
     OpenCvCamera camera;
-    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    AprilTagDetectionPipeline aadilTagDetectionPipeline;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -60,9 +59,9 @@ public class AadilDoubleConeAuto extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        aadilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
-        camera.setPipeline(aprilTagDetectionPipeline);
+        camera.setPipeline(aadilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -82,7 +81,7 @@ public class AadilDoubleConeAuto extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested())
         {
-            ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            ArrayList<AprilTagDetection> currentDetections = aadilTagDetectionPipeline.getLatestDetections();
 
             if(currentDetections.size() != 0)
             {
@@ -134,63 +133,57 @@ public class AadilDoubleConeAuto extends LinearOpMode {
             telemetry.addData("Left Encoder Position", robot.f_left.getCurrentPosition());
             telemetry.addData("Right Encoder Position", robot.f_right.getCurrentPosition());            telemetry.update();
             sleep(20);
-            robot.claw.setPosition(0.3);
+            robot.claw.setPosition(0.7);
         }
 
 
         waitForStart();
 
         if (opModeIsActive()) {
-            strafeLeft(0.5,1430); //1430
-            moveArm(1, -2150);
-            driveStraight(0.3,100);
-            robot.claw.setPosition(0);
+            strafeLeft(0.5,1410); //1430
+            moveArm(1, -2000);
+            driveStraight(0.3,130);
+            robot.claw.setPosition(0.4);
             sleep(500);
-            driveStraight(0.3,-100);
-            robot.claw.setPosition(0.3);
+            driveStraight(0.3,-130);
+            robot.claw.setPosition(0.7);
             sleep(500);
-            strafeRight(0.5,-350); //1430
+            strafeRight(0.5,430); //1430
             sleep(200);
-            moveTurret(0.4, -188);
-            moveArm(0.7,-550);
-            robot.claw.setPosition(0);
-            driveStraight(.5, -800);
-            robot.claw.setPosition(0.3);
-            moveArm(0.7,-2000);
-            driveStraight(.5, 800);
-            moveTurret(0.4, 40);
-            moveArm(.7, 3100);
+            moveTurret(0.4, 0);
+            moveArm(1, 0);
+            robot.claw.setPosition(0.4);
 
+//your mother//
+            //    strafeLeft(1,1500);
 
-            //    strafeLeft(1,1500);s
-
-            //  moveArm(1, -2800);  //3100 is maximum
+          //  moveArm(1, -2800);  //3100 is maximum
         /*    driveStraight(0.2, 200);
-            robot.claw.setPosition(0);
+            robot.claw.setPosition(0.3);
             driveBack(0.2, 200);
             tagToTelemetry(tagOfInterest);
             strafeLeft(1,500);*/
-            //  sleep(3000);
+          //  sleep(3000);
 
-            //  moveTurret(0.4, -170);
-            //  sleep(2000);
-            //  moveTurret(0.2, 0);
-            // sleep(3000);
-            // moveArm(0.2, 0);
-//            if (tagOfInterest.id == MIDDLE) {
-//            }
-//            if (tagOfInterest.id == LEFT){
-//                //  strafeLeft(1,500);
-//                driveStraight(0.5, -700);
-//            }
-//            if (tagOfInterest.id == RIGHT){
-//                //          strafeLeft(1,400);
-//                driveStraight(0.5, 600);
-//            }
-//            if (tagOfInterest.id != MIDDLE || tagOfInterest.id != LEFT || tagOfInterest.id != RIGHT){
-//                //  driveBack(0.5, 400);
-//                //  System.out.println("hggyg");
-//            }
+          //  moveTurret(0.4, -170);
+          //  sleep(2000);
+          //  moveTurret(0.2, 0);
+           // sleep(3000);
+           // moveArm(0.2, 0);
+            if (tagOfInterest.id == MIDDLE) {
+            }
+            if (tagOfInterest.id == LEFT){
+              //  strafeLeft(1,500);
+                driveStraight(0.5, -650);
+            }
+            if (tagOfInterest.id == RIGHT){
+      //          strafeLeft(1,400);
+                driveStraight(0.5, 650);
+            }
+            if (tagOfInterest.id != MIDDLE || tagOfInterest.id != LEFT || tagOfInterest.id != RIGHT){
+              //  driveBack(0.5, 400);
+              //  System.out.println("hggyg");
+            }
 
         }
 

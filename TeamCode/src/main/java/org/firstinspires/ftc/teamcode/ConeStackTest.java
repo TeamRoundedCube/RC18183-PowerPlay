@@ -9,6 +9,7 @@
 // |____|    \____\      |_____|      |____|      \____\  /___/             \___\ |___|    \_____|
 
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //Created by XXXX XX/XX/2022 @ X:XXpm
 //Purpose: Teleop for qualifier robot
 
+@Disabled
 @TeleOp(name = "ConeTest")
 public class ConeStackTest extends OpMode {
     HardwareFullBot robot = new HardwareFullBot();
